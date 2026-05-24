@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78504bf621915c1448fed07640481aa1, type: 3}
+  m_Name: KitchenSettings
+  m_EditorClassIdentifier: 
+  breadsArray:
+  - {fileID: 21300000, guid: 100d2e9ac7121e34fb54671da0893c66, type: 3}
+  - {fileID: 21300000, guid: a70a7613982e00540b4a7115418699dd, type: 3}
+  breadSlicesArray:
+  - {fileID: 21300000, guid: e719f614d1167974993a31bbedfce9b5, type: 3}
+  - {fileID: 21300000, guid: f5e92c8daa5c8494ebd84178c5153670, type: 3}
+  saucesArray:
+  - {fileID: 21300000, guid: d6b52ffe4e3cc474993502fee7898057, type: 3}
+  - {fileID: 21300000, guid: 7938f3f38f3b3644491aa63031b8b363, type: 3}
+  sauceDaubsArray:
+  - {fileID: 21300000, guid: a39aaa8b36f91f64abf42255cf55af41, type: 3}
+  - {fileID: 21300000, guid: 624c80d620eb14c40b5c796d1684550c, type: 3}
+  maxCookingTime: 3
+  maxBurningTime: 5
+  foodSettingsArray:
+  - {fileID: 11400000, guid: 39ca4dedd231a65498fb33f85b472dc3, type: 2}
+  - {fileID: 11400000, guid: 42905078ccca7ab44957365580541664, type: 2}
+  glassFillTime: 3
+  drinksArray:
+  - {fileID: 21300000, guid: 68319b486c5f77047af24c2b5bab0184, type: 3}
+  - {fileID: 21300000, guid: 9c1f04aa2e2edfa42b4137cd25758dad, type: 3}
+  - {fileID: 21300000, guid: d5459ece7d8940848a67c9b167cd69cb, type: 3}
+  drinkColorsArray:
+  - {r: 0.4784314, g: 0.34901962, b: 0.23137257, a: 1}
+  - {r: 0.9058824, g: 0.7960785, b: 0.40784317, a: 1}
+  - {r: 0.4666667, g: 0.2627451, b: 0.34117648, a: 1}
+  orderLifeTime: 25
