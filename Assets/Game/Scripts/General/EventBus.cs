@@ -12,6 +12,11 @@ public class EventBus
     public static Action OnGamePaused;
     public static Action OnGameResumed;
 
+    [Header("Orders Events")]
+
+    public static Action<int> OnNpcStoped;
+    public static Action<int> OnOrderDelete;
+
     [Header("Delivery Events")]
 
     public static Action<int> OnBreadClicked;

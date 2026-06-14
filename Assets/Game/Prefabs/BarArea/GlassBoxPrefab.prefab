@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 971633207126620137}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.171, y: -1.409, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
@@ -91,12 +91,12 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0.60942036, y: 0.6240178}
-      - {x: -0.24781269, y: 0.63301873}
-      - {x: -1.1652967, y: 0.05617574}
-      - {x: -1.1488748, y: -0.5197861}
-      - {x: -0.46390334, y: -0.8040346}
-      - {x: 1.0259987, y: -0.4783491}
-      - {x: 1.0942514, y: 0.3083486}
+      - {x: -0.15826935, y: 0.61924267}
+      - {x: -0.83467305, y: 0.07683948}
+      - {x: -0.81825113, y: -0.5197861}
+      - {x: -0.28481522, y: -0.77648246}
+      - {x: 0.9157909, y: -0.43702066}
+      - {x: 0.94960356, y: 0.3152365}
   m_UseDelaunayMesh: 0
 --- !u!1 &5289275244976021301
 GameObject:
@@ -124,8 +124,8 @@ Transform:
   m_GameObject: {fileID: 5289275244976021301}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_LocalPosition: {x: 0.09, y: 0.02, z: 0}
+  m_LocalScale: {x: 0.8, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7708194436709392927}
@@ -170,7 +170,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 105
   m_Sprite: {fileID: 21300000, guid: 4122ee41c09699945a287ab4f96ff9fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

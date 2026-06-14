@@ -40,21 +40,29 @@ public class OrderManager : MonoBehaviour
 
     [SerializeField] Transform orderParent;
     [SerializeField] OrderPrefab orderPrefab;
-
-    private List<OrderPrefab> ordersList = new List<OrderPrefab>();
+    [SerializeField] NpcPrefab npcPrefab;
 
     private KitchenSettings kitchenSettings;
-
-    private float orderSpacing = 1.5f;
+    private OrderSpawner orderSpawner;
+    private NpcSpawner npcSpawner;
 
     private float timeToNewOrder = 5f;
     private float orderTimer;
+
+    private float[] xPositionsArray;
+    private int[] positionStatusArray;
 
     public void Init(KitchenSettings settings)
     {
         Instance = this;
 
         kitchenSettings = settings;
+        orderSpawner = new OrderSpawner(orderParent, orderPrefab, npcPrefab, kitchenSettings);
+
+        xPositionsArray = new float[] { -7f, -3.5f, 0f, 3.5f, 7f };
+        positionStatusArray = new int[5];
+
+        EventBus.OnOrderDelete += ClearPosStatusByNum;
 
         StartSpawnTimer();
     }
@@ -62,163 +70,67 @@ public class OrderManager : MonoBehaviour
     public void UpdateScript()
     {
         UpdateSpawnTimer();
-        CheckOrdersLifeTimers();
-    }
-
-    public bool CheckFoodInOrders(FoodParams foodParams)
-    {
-        for (int i = 0; i < ordersList.Count; i++)
-        {
-            if (ordersList[i].orderParams.breadID == foodParams.breadNum &&
-                ordersList[i].orderParams.foodID == foodParams.foodNum &&
-                ordersList[i].orderParams.sauceID == foodParams.sauceNum)
-            {
-                ordersList[i].CloseFood();
-                CheckOrderComplete(i);
-                EventBus.OnComboAdded?.Invoke();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public bool CheckDrinkInOrders(int drinkParams = 0)
-    {
-        for (int i = 0; i < ordersList.Count; i++)
-        {
-            if (ordersList[i].orderParams.drinkID == drinkParams)
-            {
-                ordersList[i].CloseDrink();
-                CheckOrderComplete(i);
-                EventBus.OnComboAdded?.Invoke();
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private void CheckOrderComplete(int orderID)
-    {
-        if (ordersList[orderID].CheckOrderComplete())
-        {
-            CloseOrderOnNum(orderID);
-        }
+        orderSpawner.CheckOrdersLifeTimers();
     }
 
     public void ResetPart()
     {
-        ClearOrders();
+        orderSpawner.ClearOrders();
         StartSpawnTimer();
+        positionStatusArray = new int[5];
     }
 
     #region Orders
 
     public void SpawnNewOrder()
     {
-        if (ordersList.Count >= 5)
+        int freePos = GetFreePositionNum();
+
+        if (freePos == -1)
             return;
 
-        OrderParams newOrderParams = SetNewOrderParams();
-        OrderPrefab newOrder = Instantiate(orderPrefab, orderParent);
-        newOrder.Init(newOrderParams, kitchenSettings);
-        ordersList.Add(newOrder);
-        CheckOrdersPositions();
+        orderSpawner.SpawnNewOrder(freePos, xPositionsArray[freePos]);
     }
 
-    public void CloseOrder()
-    {
-        if (ordersList.Count == 0)
-            return;
+    public bool CheckFoodInOrders(FoodParams foodParams) => orderSpawner.CheckFoodInOrders(foodParams);
 
-        DeleteOrder(0);
-        CheckOrdersPositions();
-    }
-
-    public void CloseOrderOnNum(int num)
-    {
-        if (ordersList.Count == 0)
-            return;
-
-        DeleteOrder(num);
-        CheckOrdersPositions();
-
-        EventBus.OnRoundMoneyChanged?.Invoke(50);
-    }
-
-    private void DeleteOrder(int numInList)
-    {
-        OrderPrefab order = ordersList[numInList];
-        ordersList.RemoveAt(numInList);
-        Destroy(order.gameObject);
-    }
-
-    private void CheckOrdersPositions()
-    {
-        for (int i = 0; i < ordersList.Count; i++)
-        {
-            ordersList[i].transform.localPosition = new Vector3(0, orderSpacing * i, 0);
-        }
-    }
-
-    private void ClearOrders()
-    {
-        for (int i = 0; i < ordersList.Count; i++)
-        {
-            Destroy(ordersList[i].gameObject);
-        }
-        ordersList.Clear();
-    }
+    public bool CheckDrinkInOrders(int drinkParams = 0) => orderSpawner.CheckDrinkInOrders(drinkParams);
 
     #endregion
 
-    #region Order Randomizer
-
-    private OrderParams SetNewOrderParams()
+    private int GetFreePositionNum()
     {
-        int[] food = GetRandomFoodArray();
-        int drink = GetRandomDrink();
+        List<int> freePos = new List<int>();
 
-        return new OrderParams(0, new int[] { food[0], food[1], food[2], drink });
-    }
-
-    private int[] GetRandomFoodArray()
-    {
-        int breadID = Random.Range(0, kitchenSettings.breadSlicesArray.Length);
-        int foodID = Random.Range(0, kitchenSettings.foodSettingsArray.Length);
-        int sauceID = Random.Range(0, kitchenSettings.sauceDaubsArray.Length);
-
-        return new int[] { breadID, foodID, sauceID };
-    }
-
-    private int GetRandomDrink()
-    {
-        return Random.Range(0, kitchenSettings.drinksArray.Length);
-    }
-
-    #endregion
-
-    #region Orders LifeTimer
-
-    private void CheckOrdersLifeTimers()
-    {
-        for (int i = 0; i < ordersList.Count; i++)
+        for (int i = 0; i < positionStatusArray.Length; i++)
         {
-            if (!ordersList[i].CheckOrderAlive())
+            if (positionStatusArray[i] == 0)
             {
-                DeleteOrder(i);
-                CheckOrdersPositions();
+                freePos.Add(i);
             }
         }
+
+        if (freePos.Count == 0)
+            return -1;
+
+        int rand = Random.Range(0, freePos.Count);
+        int posNum = freePos[rand];
+        positionStatusArray[posNum] = 1;
+
+        return posNum;
     }
 
-    #endregion
+    private void ClearPosStatusByNum(int num)
+    {
+        positionStatusArray[num] = 0;
+    }
 
     #region Spawn Timer
 
     private void UpdateSpawnTimer()
     {
-        if (ordersList.Count >= 5)
+        //if (orderSpawner.ordersList.Count >= 5)
+        if (orderSpawner.CheckListIsFull())
             return;
 
         orderTimer -= Time.deltaTime;
