@@ -19,6 +19,8 @@ public class UIGameMenuPart : MonoBehaviour
 
         EventBus.OnGamePaused += SwitchResumeButton;
         EventBus.OnGameResumed += SwitchStartButton;
+
+        SwitchStartButton();
     }
 
     public void SwitchMenuActive(bool isActive)
@@ -28,7 +30,7 @@ public class UIGameMenuPart : MonoBehaviour
 
     public void UpdateTotalCounter(int count)
     {
-        moneyCounterText.text = "Total Money: " + count;
+        moneyCounterText.text = count.ToString();
     }
 
     private void SwitchStartButton()

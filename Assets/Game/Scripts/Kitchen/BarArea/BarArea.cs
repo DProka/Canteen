@@ -77,6 +77,7 @@ public class BarArea : MonoBehaviour
             if (glassesArray[i].status == 1)
             {
                 glassesArray[i].StartFillGlass(drinkID, settings.drinkColorsArray[drinkID]);
+                SoundController.Instance.PlaySound(Sound.Drink);
                 break;
             }
         }

@@ -34,7 +34,7 @@ public class BurnerPrefab : MonoBehaviour, IClickable
 
     public void UpdateScript()
     {
-        if(status == 1)
+        if (status == 1)
         {
             cookingTime += Time.deltaTime;
             visualTimer.UpdateTimer(cookingTime, cookingTimeMax);
@@ -43,9 +43,10 @@ public class BurnerPrefab : MonoBehaviour, IClickable
             {
                 status = 2;
                 foodSprite.sprite = foodStatusSprites[1];
+                SoundController.Instance.PlaySound(Sound.Burner2);
             }
         }
-        else if(status == 2)
+        else if (status == 2)
         {
             burnTime += Time.deltaTime;
             visualTimer.UpdateTimer(burnTime, burnTimeMax);
@@ -67,15 +68,17 @@ public class BurnerPrefab : MonoBehaviour, IClickable
         foodSprite.enabled = true;
         foodSprite.sprite = foodStatusSprites[0];
         visualTimer.SwitchTimerObject(true);
+
+        SoundController.Instance.PlaySound(Sound.Burner1);
     }
 
     public void OnClick()
     {
-        if(status == 2)
+        if (status == 2)
         {
             EventBus.OnCookedFoodClicked?.Invoke(foodID, burnerID);
         }
-        else if(status == 3)
+        else if (status == 3)
         {
             ResetBurner();
         }
@@ -89,5 +92,23 @@ public class BurnerPrefab : MonoBehaviour, IClickable
         cookingTime = 0;
         burnTime = 0;
         visualTimer.SwitchTimerObject(false);
+    }
+
+    private void SwitchStatus(int statusNum)
+    {
+        switch (statusNum)
+        {
+            case 0:
+                break;
+
+            case 1:
+                break;
+
+            case 2:
+                break;
+
+            case 3:
+                break;
+        }
     }
 }

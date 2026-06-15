@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e452a16da3eeeb3468e8c3c709e3bef2, type: 3}
+  m_Name: SoundData
+  m_EditorClassIdentifier: 
+  money: {fileID: 8300000, guid: 8b9bbdf373a6f644c8775ac54b345996, type: 3}
+  burner1: {fileID: 8300000, guid: 9bf59c7f90320b84a8067d7edae7ec86, type: 3}
+  burner2: {fileID: 8300000, guid: 52dfb2bc21248184fb515addb45c2f18, type: 3}
+  drink: {fileID: 8300000, guid: 38f59f0bc8349f74fbad4696dc3ba3e1, type: 3}

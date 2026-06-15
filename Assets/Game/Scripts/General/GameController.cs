@@ -3,6 +3,15 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public static SettingsData settings { get; private set; }
+
+    [Header("General")]
+
+    [SerializeField] SoundController soundController;
+    [SerializeField] SettingsData settingsData;
+
+    [Header("Game")]
+
     [SerializeField] KitchenController kitchenController;
     [SerializeField] OrderManager orderManager;
 
@@ -13,6 +22,8 @@ public class GameController : MonoBehaviour
     [Header("Settings")]
 
     [SerializeField] KitchenSettings kitchenSettings;
+
+    //private SettingsBase settings;
 
     private ClickManager clickManager;
     private PlayerParams playerParams;
@@ -29,10 +40,13 @@ public class GameController : MonoBehaviour
 
         roundTimer = new RoundTimer(60f);
         comboTimer = new ComboTimer(10f);
+
+        settings = settingsData;// new SettingsBase(settingsData);
     }
 
     private void Start()
     {
+        soundController.Init();
         kitchenController.Init(kitchenSettings);
         orderManager.Init(kitchenSettings);
         uiController.Init(this);

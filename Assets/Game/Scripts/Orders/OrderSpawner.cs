@@ -122,6 +122,7 @@ public class OrderSpawner
         //}
 
         DeleteOrder(id);
+        SoundController.Instance.PlaySound(Sound.Money);
         EventBus.OnRoundMoneyChanged?.Invoke(50);
     }
 
