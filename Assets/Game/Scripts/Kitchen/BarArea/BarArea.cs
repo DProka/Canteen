@@ -47,7 +47,23 @@ public class BarArea : MonoBehaviour
     {
         for (int i = 0; i < cansArray.Length; i++)
         {
-            cansArray[i].Init(i, settings.drinksArray[i]);
+            cansArray[i].Init(i);
+            cansArray[i].SetSprite(settings.drinksArray[i]);
+        }
+
+        CheckOpenedCans();
+    }
+
+    private void CheckOpenedCans()
+    {
+        foreach (CanPrefab pref in cansArray)
+        {
+            pref.SwitchStatus(KitchenStaffStatus.Closed);
+        }
+
+        for (int i = 0; i < PlayerParams.Instance.breadCount; i++)
+        {
+            cansArray[i].SwitchStatus(KitchenStaffStatus.Open);
         }
     }
 
@@ -61,7 +77,7 @@ public class BarArea : MonoBehaviour
 
         for (int i = 0; i < glassesArray.Length; i++)
         {
-            if (glassesArray[i].status == 0)
+            if (glassesArray[i].status != KitchenStaffStatus.Closed && glassesArray[i].glassStatus == 0)
             {
                 glassesArray[i].SetNewGlass();
                 Debug.Log("PutEmptyGlass on: " + i);
@@ -74,7 +90,7 @@ public class BarArea : MonoBehaviour
     {
         for (int i = 0; i < glassesArray.Length; i++)
         {
-            if (glassesArray[i].status == 1)
+            if (glassesArray[i].glassStatus == 1)
             {
                 glassesArray[i].StartFillGlass(drinkID, settings.drinkColorsArray[drinkID]);
                 SoundController.Instance.PlaySound(Sound.Drink);
@@ -87,7 +103,7 @@ public class BarArea : MonoBehaviour
     {
         for (int i = 0; i < glassesArray.Length; i++)
         {
-            if (glassesArray[i].status == 2)
+            if (glassesArray[i].glassStatus == 2)
             {
                 glassesArray[i].UpdateGlass();
             }
@@ -98,14 +114,31 @@ public class BarArea : MonoBehaviour
     {
         for (int i = 0; i < glassesArray.Length; i++)
         {
-            glassesArray[i].Init(i, settings.glassFillTime);
+            //glassesArray[i].Init(i);
+            //glassesArray[i].UpdateParams(settings.glassFillTime);
+            ResetGlassByNum(i);
         }
+
+        CheckOpenedGlasses();
     }
 
     private void ResetGlassByNum(int num)
     {
-        glassesArray[num].Init(num, settings.glassFillTime);
-        //glassesArray[num].ResetGlass();
+        glassesArray[num].Init(num);
+        glassesArray[num].UpdateParams(settings.glassFillTime);
+    }
+
+    private void CheckOpenedGlasses()
+    {
+        foreach (GlassFullPrefab pref in glassesArray)
+        {
+            pref.SwitchStatus(KitchenStaffStatus.Closed);
+        }
+
+        for (int i = 0; i < PlayerParams.Instance.breadCount; i++)
+        {
+            glassesArray[i].SwitchStatus(KitchenStaffStatus.Open);
+        }
     }
 
     #endregion

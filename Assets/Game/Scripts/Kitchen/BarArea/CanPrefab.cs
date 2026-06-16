@@ -1,20 +1,22 @@
 
 using UnityEngine;
 
-public class CanPrefab : MonoBehaviour, IClickable
+public class CanPrefab : KitchenStaffPrefab
 {
     [SerializeField] SpriteRenderer mainSprite;
 
-    private int canID;
-
-    public void Init(int _canID, Sprite sprite)
+    public override void Init(int _canID)
     {
-        canID = _canID;
+        base.Init(_canID);
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
         mainSprite.sprite = sprite;
     }
 
-    public void OnClick()
+    public override void OnClick()
     {
-        EventBus.OnCanClicked?.Invoke(canID);
+        EventBus.OnCanClicked?.Invoke(staffID);
     }
 }

@@ -1,9 +1,9 @@
 
 using UnityEngine;
 
-public class GlassFullPrefab : MonoBehaviour, IClickable
+public class GlassFullPrefab : KitchenStaffPrefab
 {
-    public int status { get; private set; } // 0 = clean, 1 = empty, 2 = fill, 3 = full
+    public int glassStatus { get; private set; } // 0 = clean, 1 = empty, 2 = fill, 3 = full
 
     [SerializeField] SpriteRenderer backSprite;
     [SerializeField] SpriteRenderer middleSprite;
@@ -11,23 +11,26 @@ public class GlassFullPrefab : MonoBehaviour, IClickable
 
     [SerializeField] VisualTimer visualTimer;
 
-    private int glassID;
     private int drinkID = 0;
 
     private float fillTimeMax = 5f;
     private float fillTimer = 5f;
 
-    public void Init(int _glassID, float fillTime)
+    public override void Init(int _glassID)
     {
-        glassID = _glassID;
-        fillTimeMax = fillTime;
+        base.Init(_glassID);
 
         UpdateStatus(0);
     }
 
+    public void UpdateParams(float fillTime)
+    {
+        fillTimeMax = fillTime;
+    }
+
     public void UpdateGlass()
     {
-        if (status == 2)
+        if (glassStatus == 2)
         {
             fillTimer += Time.deltaTime;
             visualTimer.UpdateTimer(fillTimer, fillTimeMax);
@@ -53,10 +56,10 @@ public class GlassFullPrefab : MonoBehaviour, IClickable
 
     public void OnClick()
     {
-        if(status == 3)
+        if(glassStatus == 3)
         {
-            Debug.Log("Full glass clicked: " + glassID + " drinkID: " + drinkID);
-            EventBus.OnFullGlassClicked?.Invoke(glassID, drinkID);
+            Debug.Log("Full glass clicked: " + staffID + " drinkID: " + drinkID);
+            EventBus.OnFullGlassClicked?.Invoke(staffID, drinkID);
         }
     }
 
@@ -76,15 +79,15 @@ public class GlassFullPrefab : MonoBehaviour, IClickable
         frontSprite.enabled = false;
         fillTimer = 0;
         drinkID = 0;
-        status = 0;
+        glassStatus = 0;
         visualTimer.SwitchTimerObject(false);
     }
 
     private void UpdateStatus(int _status)
     {
-        status = _status;
+        glassStatus = _status;
 
-        switch (status)
+        switch (glassStatus)
         {
             case 0:
                 ResetGlass();

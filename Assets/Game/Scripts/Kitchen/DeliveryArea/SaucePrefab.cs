@@ -1,21 +1,23 @@
 
 using UnityEngine;
 
-public class SaucePrefab : MonoBehaviour, IClickable
+public class SaucePrefab : KitchenStaffPrefab
 {
     [SerializeField] SpriteRenderer mainSprite;
 
-    private int sauceID;
-
-    public void Init(int id, Sprite sprite)
+    public override void Init(int id)
     {
-        sauceID = id;
+        base.Init(id);
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
         mainSprite.sprite = sprite;
     }
 
-    public void OnClick()
+    public override void OnClick()
     {
-        Debug.Log($"Clicked {gameObject.name}. ID - {sauceID}");
-        EventBus.OnSauceClicked?.Invoke(sauceID);
+        Debug.Log($"Clicked {gameObject.name}. ID - {staffID}");
+        EventBus.OnSauceClicked?.Invoke(staffID);
     }
 }

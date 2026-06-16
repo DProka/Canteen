@@ -24,8 +24,6 @@ public class DeliveryArea : MonoBehaviour
 
     private KitchenSettings settings;
 
-    private FoodParams[] foodParamsArray;
-
     private int pickedPlateNum = -1;
 
     public void Init(KitchenSettings _kitchenSettings)
@@ -48,15 +46,6 @@ public class DeliveryArea : MonoBehaviour
         ResetAllPlates();
     }
 
-    private void SetArrays()
-    {
-        foodParamsArray = new FoodParams[readyFoodPrefabsArray.Length];
-        for (int i = 0; i < foodParamsArray.Length; i++)
-        {
-            foodParamsArray[i] = new FoodParams { breadNum = -1, foodNum = -1, sauceNum = -1 };
-        }
-    }
-
     private void MoveFoodToTrash()
     {
         if (pickedPlateNum != -1)
@@ -68,7 +57,7 @@ public class DeliveryArea : MonoBehaviour
 
     private void CheckFoodInOrders(int plateID)
     {
-        if (OrderManager.Instance.CheckFoodInOrders(foodParamsArray[plateID]))
+        if (OrderManager.Instance.CheckFoodInOrders(readyFoodPrefabsArray[plateID].foodParams))
         {
             ResetPlateByNum(plateID);
         }
@@ -84,13 +73,12 @@ public class DeliveryArea : MonoBehaviour
         {
             readyFoodPrefabsArray[i].Init(i);
         }
+
+        CheckOpenedPlates();
     }
 
     private void ResetPlateByNum(int num)
     {
-        foodParamsArray[num].breadNum = -1;
-        foodParamsArray[num].foodNum = -1;
-        foodParamsArray[num].sauceNum = -1;
         readyFoodPrefabsArray[num].ResetPrefab();
     }
 
@@ -100,18 +88,43 @@ public class DeliveryArea : MonoBehaviour
         {
             ResetPlateByNum(i);
         }
+
+        CheckOpenedPlates();
     }
+
+    private void SetArrays()
+    {
+        for (int i = 0; i < readyFoodPrefabsArray.Length; i++)
+        {
+            FoodParams newParams = new FoodParams { breadNum = -1, foodNum = -1, sauceNum = -1 };
+            readyFoodPrefabsArray[i].UpdateFoodParams(newParams);
+        }
+    }
+
+    private void CheckOpenedPlates()
+    {
+        foreach (ReadyFoodPrefab pref in readyFoodPrefabsArray)
+        {
+            pref.SwitchStatus(KitchenStaffStatus.Closed);
+        }
+
+        for (int i = 0; i < PlayerParams.Instance.tapeCount; i++)
+        {
+            readyFoodPrefabsArray[i].SwitchStatus(KitchenStaffStatus.Open);
+        }
+    }
+
     #endregion
 
     #region Bread Part
 
     public void SetBreadOnEmptyPlate(int breadNum)
     {
-        for (int i = 0; i < foodParamsArray.Length; i++)
+        for (int i = 0; i < readyFoodPrefabsArray.Length; i++)
         {
-            if (foodParamsArray[i].breadNum == -1)
+            if (readyFoodPrefabsArray[i].status != KitchenStaffStatus.Closed && readyFoodPrefabsArray[i].foodParams.breadNum == -1)
             {
-                foodParamsArray[i].breadNum = breadNum;
+                readyFoodPrefabsArray[i].foodParams.breadNum = breadNum;
                 readyFoodPrefabsArray[i].UpdateSprite(0, settings.breadSlicesArray[breadNum]);
                 Debug.Log($"Plate Updated");
                 break;
@@ -123,7 +136,23 @@ public class DeliveryArea : MonoBehaviour
     {
         for (int i = 0; i < breadPrefabsArray.Length; i++)
         {
-            breadPrefabsArray[i].Init(i, settings.breadsArray[i]);
+            breadPrefabsArray[i].Init(i);
+            breadPrefabsArray[i].SetSprite(settings.breadsArray[i]);
+        }
+
+        CheckOpenedBreads();
+    }
+
+    private void CheckOpenedBreads()
+    {
+        foreach (BreadPrefab pref in breadPrefabsArray)
+        {
+            pref.SwitchStatus(KitchenStaffStatus.Closed);
+        }
+
+        for (int i = 0; i < PlayerParams.Instance.breadCount; i++)
+        {
+            breadPrefabsArray[i].SwitchStatus(KitchenStaffStatus.Open);
         }
     }
 
@@ -133,11 +162,11 @@ public class DeliveryArea : MonoBehaviour
 
     public void SetFoodOnEmptyBread(int meatNum, int burnerNum)
     {
-        for (int i = 0; i < foodParamsArray.Length; i++)
+        for (int i = 0; i < readyFoodPrefabsArray.Length; i++)
         {
-            if (foodParamsArray[i].breadNum != -1 && foodParamsArray[i].foodNum == -1)
+            if (readyFoodPrefabsArray[i].foodParams.breadNum != -1 && readyFoodPrefabsArray[i].foodParams.foodNum == -1)
             {
-                foodParamsArray[i].foodNum = meatNum;
+                readyFoodPrefabsArray[i].foodParams.foodNum = meatNum;
                 readyFoodPrefabsArray[i].UpdateSprite(1, settings.foodSettingsArray[meatNum].foodSpritesArray[1]);
                 EventBus.OnBurnerReseted?.Invoke(burnerNum);
                 break;
@@ -151,11 +180,11 @@ public class DeliveryArea : MonoBehaviour
 
     public void SetSausageOnEmptyMeat(int sauceNum)
     {
-        for (int i = 0; i < foodParamsArray.Length; i++)
+        for (int i = 0; i < readyFoodPrefabsArray.Length; i++)
         {
-            if (foodParamsArray[i].foodNum != -1 && foodParamsArray[i].sauceNum == -1)
+            if (readyFoodPrefabsArray[i].foodParams.foodNum != -1 && readyFoodPrefabsArray[i].foodParams.sauceNum == -1)
             {
-                foodParamsArray[i].sauceNum = sauceNum;
+                readyFoodPrefabsArray[i].foodParams.sauceNum = sauceNum;
                 readyFoodPrefabsArray[i].UpdateSprite(2, settings.sauceDaubsArray[sauceNum]);
                 break;
             }
@@ -166,7 +195,23 @@ public class DeliveryArea : MonoBehaviour
     {
         for (int i = 0; i < saucePrefabsArray.Length; i++)
         {
-            saucePrefabsArray[i].Init(i, settings.saucesArray[i]);
+            saucePrefabsArray[i].Init(i);
+            saucePrefabsArray[i].SetSprite(settings.saucesArray[i]);
+        }
+
+        CheckOpenedSauces();
+    }
+
+    private void CheckOpenedSauces()
+    {
+        foreach (SaucePrefab pref in saucePrefabsArray)
+        {
+            pref.SwitchStatus(KitchenStaffStatus.Closed);
+        }
+
+        for (int i = 0; i < PlayerParams.Instance.sauceCount; i++)
+        {
+            saucePrefabsArray[i].SwitchStatus(KitchenStaffStatus.Open);
         }
     }
 

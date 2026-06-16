@@ -1,17 +1,22 @@
 
 using UnityEngine;
 
-public class ReadyFoodPrefab : MonoBehaviour, IClickable
+public class ReadyFoodPrefab : KitchenStaffPrefab
 {
-    public int plateID { get; private set; }
+    public FoodParams foodParams;
 
     [SerializeField] SpriteRenderer[] spritesArray;
 
-    public void Init(int id)
+    public override void Init(int id)
     {
-        plateID = id;
+        base.Init(id);
 
         ResetPrefab();
+    }
+
+    public void UpdateFoodParams(FoodParams newParams)
+    {
+        foodParams = newParams;
     }
 
     public void UpdateSprite(int partNum, Sprite sprite)
@@ -22,6 +27,10 @@ public class ReadyFoodPrefab : MonoBehaviour, IClickable
 
     public void ResetPrefab()
     {
+        foodParams.breadNum = -1;
+        foodParams.foodNum = -1;
+        foodParams.sauceNum = -1;
+
         foreach (SpriteRenderer sprite in spritesArray)
         {
             sprite.color = Color.white;
@@ -29,9 +38,11 @@ public class ReadyFoodPrefab : MonoBehaviour, IClickable
         }
     }
 
-    public void OnClick()
+    public override void OnClick()
     {
+        base.OnClick();
+
         Debug.Log("Clicked: " + gameObject.name);
-        EventBus.OnReadyFoodClicked?.Invoke(plateID);
+        EventBus.OnReadyFoodClicked?.Invoke(staffID);
     }
 }

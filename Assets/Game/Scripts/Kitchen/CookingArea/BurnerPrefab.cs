@@ -1,9 +1,9 @@
 
 using UnityEngine;
 
-public class BurnerPrefab : MonoBehaviour, IClickable
+public class BurnerPrefab : KitchenStaffPrefab
 {
-    public int status { get; private set; } // 0 = empty, 1 = cooking, 2 = coocked, 3 = burnt
+    public int burnerStatus { get; private set; } // 0 = empty, 1 = cooking, 2 = coocked, 3 = burnt
 
     [SerializeField] SpriteRenderer foodSprite;
 
@@ -11,7 +11,6 @@ public class BurnerPrefab : MonoBehaviour, IClickable
 
     [SerializeField] VisualTimer visualTimer;
 
-    private int burnerID = 0;
     private int foodID = 0;
 
     private float cookingTimeMax = 5f;
@@ -22,49 +21,30 @@ public class BurnerPrefab : MonoBehaviour, IClickable
 
     private Sprite[] foodStatusSprites;
 
-    public void Init(int id, float[] timers)
+    public override void Init(int id)
     {
-        burnerID = id;
-
-        cookingTimeMax = timers[0];
-        burnTimeMax = timers[1];
+        base.Init(id);
 
         ResetBurner();
     }
 
     public void UpdateScript()
     {
-        if (status == 1)
-        {
-            cookingTime += Time.deltaTime;
-            visualTimer.UpdateTimer(cookingTime, cookingTimeMax);
+        UpdateCoockindTimer();
+        UpdateBurnTimer();
+    }
 
-            if (cookingTime >= cookingTimeMax)
-            {
-                status = 2;
-                foodSprite.sprite = foodStatusSprites[1];
-                SoundController.Instance.PlaySound(Sound.Burner2);
-            }
-        }
-        else if (status == 2)
-        {
-            burnTime += Time.deltaTime;
-            visualTimer.UpdateTimer(burnTime, burnTimeMax);
-
-            if (burnTime >= burnTimeMax)
-            {
-                status = 3;
-                foodSprite.sprite = foodStatusSprites[2];
-                visualTimer.SwitchTimerObject(false);
-            }
-        }
+    public void UpdateParams(float[] timers)
+    {
+        cookingTimeMax = timers[0];
+        burnTimeMax = timers[1];
     }
 
     public void StartCooking(int _foodID, Sprite[] _foodStatusColors)
     {
         foodID = _foodID;
         foodStatusSprites = _foodStatusColors;
-        status = 1;
+        burnerStatus = 1;
         foodSprite.enabled = true;
         foodSprite.sprite = foodStatusSprites[0];
         visualTimer.SwitchTimerObject(true);
@@ -72,13 +52,13 @@ public class BurnerPrefab : MonoBehaviour, IClickable
         SoundController.Instance.PlaySound(Sound.Burner1);
     }
 
-    public void OnClick()
+    public override void OnClick()
     {
-        if (status == 2)
+        if (burnerStatus == 2)
         {
-            EventBus.OnCookedFoodClicked?.Invoke(foodID, burnerID);
+            EventBus.OnCookedFoodClicked?.Invoke(foodID, staffID);
         }
-        else if (status == 3)
+        else if (burnerStatus == 3)
         {
             ResetBurner();
         }
@@ -88,27 +68,45 @@ public class BurnerPrefab : MonoBehaviour, IClickable
     {
         foodSprite.enabled = false;
         foodID = 0;
-        status = 0;
+        burnerStatus = 0;
         cookingTime = 0;
         burnTime = 0;
         visualTimer.SwitchTimerObject(false);
     }
 
-    private void SwitchStatus(int statusNum)
+    #region Timers
+
+    private void UpdateCoockindTimer()
     {
-        switch (statusNum)
+        if (burnerStatus == 1)
         {
-            case 0:
-                break;
+            cookingTime += Time.deltaTime;
+            visualTimer.UpdateTimer(cookingTime, cookingTimeMax);
 
-            case 1:
-                break;
-
-            case 2:
-                break;
-
-            case 3:
-                break;
+            if (cookingTime >= cookingTimeMax)
+            {
+                burnerStatus = 2;
+                foodSprite.sprite = foodStatusSprites[1];
+                SoundController.Instance.PlaySound(Sound.Burner2);
+            }
         }
     }
+
+    private void UpdateBurnTimer()
+    {
+        if (burnerStatus == 2)
+        {
+            burnTime += Time.deltaTime;
+            visualTimer.UpdateTimer(burnTime, burnTimeMax);
+
+            if (burnTime >= burnTimeMax)
+            {
+                burnerStatus = 3;
+                foodSprite.sprite = foodStatusSprites[2];
+                visualTimer.SwitchTimerObject(false);
+            }
+        }
+    }
+
+    #endregion
 }
