@@ -44,7 +44,6 @@ public class OrderManager : MonoBehaviour
 
     private KitchenSettings kitchenSettings;
     private OrderSpawner orderSpawner;
-    private NpcSpawner npcSpawner;
 
     private float timeToNewOrder = 5f;
     private float orderTimer;

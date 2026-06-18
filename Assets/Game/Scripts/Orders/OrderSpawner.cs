@@ -11,10 +11,29 @@ public class OrderRandomizer
 
     public OrderRandomizer(KitchenSettings settings)
     {
-        breadID = Random.Range(0, settings.breadSlicesArray.Length);
-        foodID = Random.Range(0, settings.foodSettingsArray.Length);
-        sauceID = Random.Range(0, settings.sauceDaubsArray.Length);
-        drinkID = Random.Range(0, settings.drinksArray.Length);
+        //breadID = Random.Range(0, settings.breadSlicesArray.Length);
+        //foodID = Random.Range(0, settings.foodSettingsArray.Length);
+        //sauceID = Random.Range(0, settings.sauceDaubsArray.Length);
+        //drinkID = Random.Range(0, settings.drinksArray.Length);
+
+        breadID = RandomizeAvailableFood(PlayerParams.Instance.breadCount);
+        foodID = RandomizeAvailableFood(PlayerParams.Instance.rawMeatCount);
+        sauceID = RandomizeAvailableFood(PlayerParams.Instance.sauceCount);   
+        drinkID = RandomizeAvailableFood(PlayerParams.Instance.drinkCount);
+    }
+
+    private int RandomizeAvailableFood(int openedFood)
+    {
+        int foodID = 0;
+
+        if (openedFood == 0)
+            foodID = -1;
+        else
+        {
+            foodID = Random.Range(0, openedFood);
+        }
+
+        return foodID;
     }
 }
 
@@ -112,14 +131,6 @@ public class OrderSpawner
     {
         if (ordersList.Count == 0)
             return;
-
-        //for (int i = 0; i < ordersList.Count; i++)
-        //{
-        //if (ordersList[i].orderParams.orderID == id)
-        //{
-        //DeleteOrder(i);
-        //}
-        //}
 
         DeleteOrder(id);
         SoundController.Instance.PlaySound(Sound.Money);

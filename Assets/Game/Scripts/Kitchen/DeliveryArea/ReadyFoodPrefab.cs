@@ -25,6 +25,11 @@ public class ReadyFoodPrefab : KitchenStaffPrefab
         spritesArray[partNum].enabled = true;
     }
 
+    public void SwitchSpriteActiveByNum(int num, bool isActive)
+    {
+        spritesArray[num].enabled = isActive;
+    }
+
     public void ResetPrefab()
     {
         foodParams.breadNum = -1;

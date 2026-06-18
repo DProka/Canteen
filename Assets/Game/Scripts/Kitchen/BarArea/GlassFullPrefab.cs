@@ -54,7 +54,7 @@ public class GlassFullPrefab : KitchenStaffPrefab
         UpdateStatus(2);
     }
 
-    public void OnClick()
+    public override void OnClick()
     {
         if(glassStatus == 3)
         {
