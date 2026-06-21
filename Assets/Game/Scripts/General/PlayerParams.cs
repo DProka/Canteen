@@ -14,14 +14,14 @@ public class PlayerParams
     public int drinkCount { get; private set; }
 
     public int burnerCount { get; private set; }
-    public int rawMeatCount { get; private set; }
+    public int rawFoodCount { get; private set; }
 
     public PlayerParams()
     {
         Instance = this;
 
         SetStartParams();
-        
+
         EventBus.OnTotalMoneyChanged += AddTotalMoney;
         EventBus.OnRoundMoneyChanged += AddRoundMoney;
     }
@@ -39,54 +39,52 @@ public class PlayerParams
         drinkCount = 1;
 
         burnerCount = 1;
-        rawMeatCount = 1;
+        rawFoodCount = 1;
     }
 
-    #region Delivery Area
+    #region StaffParams
 
-    public void UpdateTapeCount(int count)
+    public void UpdateStaffParams(StaffType staffType, int count)
     {
-        tapeCount += count;
+        switch (staffType)
+        {
+            case StaffType.Tape: tapeCount += count; break;
+            case StaffType.Bread: breadCount += count; break;
+            case StaffType.Sauce: sauceCount += count; break;
+            case StaffType.Glass: glassCount += count; break;
+            case StaffType.Drink: drinkCount += count; break;
+            case StaffType.Burner: burnerCount += count; break;
+            case StaffType.RawFood: rawFoodCount += count; break;
+        }
     }
 
-    public void UpdateBreadCount(int count)
+    public int GetCurrentStaffCountByType(StaffType type)
     {
-        tapeCount += count;
+        switch (type)
+        {
+            case StaffType.Tape: return tapeCount;
+            case StaffType.Bread: return breadCount;
+            case StaffType.Sauce: return sauceCount;
+            case StaffType.Burner: return burnerCount;
+            case StaffType.RawFood: return rawFoodCount;
+            case StaffType.Glass: return glassCount;
+            default: return 0;
+        }
     }
 
-    public void UpdateSauceCount(int count)
+    public int GetMaxStaffCountByType(StaffType type)
     {
-        tapeCount += count;
+        switch (type)
+        {
+            case StaffType.Tape: return 4;
+            case StaffType.Bread: return 2;
+            case StaffType.Sauce: return 2;
+            case StaffType.Burner: return 4;
+            case StaffType.RawFood: return 2;
+            case StaffType.Glass: return 3;
+            default: return 0;
+        }
     }
-
-    #endregion
-
-    #region Bar Area
-
-    public void UpdateGlassCount(int count)
-    {
-        glassCount += count;
-    }
-
-    public void UpdateBarrelCount(int count)
-    {
-        drinkCount += count;
-    }
-
-    #endregion
-
-    #region Kitchen Area
-
-    public void UpdateBurnersCount(int count)
-    {
-        burnerCount += count;
-    }
-
-    public void UpdateRawMeatCount(int count)
-    {
-        rawMeatCount += count;
-    }
-
     #endregion
 
     #region Money

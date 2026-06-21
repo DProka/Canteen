@@ -17,7 +17,7 @@ public class OrderRandomizer
         //drinkID = Random.Range(0, settings.drinksArray.Length);
 
         breadID = RandomizeAvailableFood(PlayerParams.Instance.breadCount);
-        foodID = RandomizeAvailableFood(PlayerParams.Instance.rawMeatCount);
+        foodID = RandomizeAvailableFood(PlayerParams.Instance.rawFoodCount);
         sauceID = RandomizeAvailableFood(PlayerParams.Instance.sauceCount);   
         drinkID = RandomizeAvailableFood(PlayerParams.Instance.drinkCount);
     }

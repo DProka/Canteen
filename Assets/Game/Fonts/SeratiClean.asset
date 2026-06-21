@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: Serati SDF
+  m_Name: SeratiClean
   m_EditorClassIdentifier: 
-  hashCode: 135112105
+  hashCode: 204513085
   material: {fileID: 8335661474929332207}
-  materialHashCode: 1244273641
+  materialHashCode: -1641562115
   m_Version: 1.1.0
   m_SourceFontFileGUID: fd8980e386c031046b8b9ebe91caaf58
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: fd8980e386c031046b8b9ebe91caaf58, type: 3}
@@ -969,8 +969,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - GLOW_ON
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
