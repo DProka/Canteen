@@ -61,7 +61,7 @@ public class BarArea : MonoBehaviour
             pref.SwitchStatus(KitchenStaffStatus.Closed);
         }
 
-        for (int i = 0; i < PlayerParams.Instance.breadCount; i++)
+        for (int i = 0; i < PlayerParams.Instance.drinkCount; i++)
         {
             cansArray[i].SwitchStatus(KitchenStaffStatus.Open);
         }
@@ -135,7 +135,7 @@ public class BarArea : MonoBehaviour
             pref.SwitchStatus(KitchenStaffStatus.Closed);
         }
 
-        for (int i = 0; i < PlayerParams.Instance.breadCount; i++)
+        for (int i = 0; i < PlayerParams.Instance.glassCount; i++)
         {
             glassesArray[i].SwitchStatus(KitchenStaffStatus.Open);
         }

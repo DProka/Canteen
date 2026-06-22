@@ -9,8 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 543f163ff116f2f44ba3802a284761c2, type: 3}
-  m_Name: SettingsData
+  m_Script: {fileID: 11500000, guid: 3193d5ad275fa394ba1cd5f4d12b314b, type: 3}
+  m_Name: PlayerStartParams
   m_EditorClassIdentifier: 
-  soundData: {fileID: 11400000, guid: 5f62824bdaaf98c43bca84d658470cd8, type: 2}
-  playerStartParams: {fileID: 11400000, guid: e94d75682d053b24baae9e2c611146e1, type: 2}
+  totalMoneyCounter: 0
+  roundMoneyCounter: 0
+  tapeCount: 4
+  breadCount: 2
+  sauceCount: 2
+  glassCount: 3
+  drinkCount: 3
+  burnerCount: 4
+  rawFoodCount: 2

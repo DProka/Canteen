@@ -52,7 +52,7 @@ public class CookingArea : MonoBehaviour
             pref.SwitchStatus(KitchenStaffStatus.Closed);
         }
 
-        for (int i = 0; i < PlayerParams.Instance.breadCount; i++)
+        for (int i = 0; i < PlayerParams.Instance.rawFoodCount; i++)
         {
             rawFoodArray[i].SwitchStatus(KitchenStaffStatus.Open);
         }
@@ -106,7 +106,7 @@ public class CookingArea : MonoBehaviour
             pref.SwitchStatus(KitchenStaffStatus.Closed);
         }
 
-        for (int i = 0; i < PlayerParams.Instance.breadCount; i++)
+        for (int i = 0; i < PlayerParams.Instance.burnerCount; i++)
         {
             burnersArray[i].SwitchStatus(KitchenStaffStatus.Open);
         }

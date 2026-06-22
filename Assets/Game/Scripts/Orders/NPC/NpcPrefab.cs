@@ -1,12 +1,14 @@
 
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class NpcPrefab : MonoBehaviour
 {
     public int id { get; private set; }
 
     [SerializeField] Animator animator;
+    [SerializeField] SortingGroup sortingGroup;
 
     private float startPosX = 0;
     private float walkTime = 5f;
@@ -21,6 +23,8 @@ public class NpcPrefab : MonoBehaviour
 
         if (startPosX < 0)
             isFliped = true;
+
+        SetSortingLayer();
 
         Debug.Log("NPC initialized: " + id);
     }
@@ -74,6 +78,15 @@ public class NpcPrefab : MonoBehaviour
     private void StartWalkAnimation()
     {
         animator.SetBool("IsWalking", true);
+    }
+
+    #endregion
+
+    #region SortingGroup
+
+    private void SetSortingLayer()
+    {
+        sortingGroup.sortingOrder = id;
     }
 
     #endregion

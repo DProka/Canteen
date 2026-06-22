@@ -16,30 +16,30 @@ public class PlayerParams
     public int burnerCount { get; private set; }
     public int rawFoodCount { get; private set; }
 
-    public PlayerParams()
+    public PlayerParams(PlayerStartParams playerParams)
     {
         Instance = this;
 
-        SetStartParams();
+        SetStartParams(playerParams);
 
         EventBus.OnTotalMoneyChanged += AddTotalMoney;
         EventBus.OnRoundMoneyChanged += AddRoundMoney;
     }
 
-    private void SetStartParams()
+    private void SetStartParams(PlayerStartParams playerParams)
     {
-        totalMoneyCounter = 0;
-        roundMoneyCounter = 0;
+        totalMoneyCounter = playerParams.totalMoneyCounter;
+        roundMoneyCounter = playerParams.roundMoneyCounter;
 
-        tapeCount = 1;
-        breadCount = 1;
-        sauceCount = 0;
+        tapeCount = playerParams.tapeCount;
+        breadCount = playerParams.breadCount;
+        sauceCount = playerParams.sauceCount;
 
-        glassCount = 1;
-        drinkCount = 1;
+        glassCount = playerParams.glassCount;
+        drinkCount = playerParams.drinkCount;
 
-        burnerCount = 1;
-        rawFoodCount = 1;
+        burnerCount = playerParams.burnerCount;
+        rawFoodCount = playerParams.rawFoodCount;
     }
 
     #region StaffParams

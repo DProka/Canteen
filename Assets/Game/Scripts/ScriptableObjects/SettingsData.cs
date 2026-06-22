@@ -5,4 +5,5 @@ using UnityEngine;
 public class SettingsData : ScriptableObject
 {
     public SoundData soundData;
+    public PlayerStartParams playerStartParams;
 }

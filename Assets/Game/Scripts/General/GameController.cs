@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
     private void Awake()
     {
         clickManager = new ClickManager();
-        playerParams = new PlayerParams();
+        playerParams = new PlayerParams(settingsData.playerStartParams);
 
         roundTimer = new RoundTimer(60f);
         comboTimer = new ComboTimer(10f);

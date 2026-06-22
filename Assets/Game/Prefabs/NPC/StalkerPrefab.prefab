@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 8549801771458359144}
   - component: {fileID: 2227780552762321721}
   - component: {fileID: 2830654570332282106}
+  - component: {fileID: 5361883580964433398}
   m_Layer: 0
   m_Name: StalkerPrefab
   m_TagString: Untagged
@@ -207,6 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 2830654570332282106}
+  sortingGroup: {fileID: 5361883580964433398}
 --- !u!95 &2830654570332282106
 Animator:
   serializedVersion: 5
@@ -228,6 +230,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!210 &5361883580964433398
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2305483629030216729}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &3417350354491596878
 GameObject:
   m_ObjectHideFlags: 0
