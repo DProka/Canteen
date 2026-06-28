@@ -8,9 +8,9 @@ public class UIController : MonoBehaviour
     [SerializeField] UIRoundPart roundPart;
     [SerializeField] UIGameMenuPart gameMenuPart;
 
-    private GameController gameController;
+    private CanteenController gameController;
 
-    public void Init(GameController controller)
+    public void Init(CanteenController controller)
     {
         Instance = this;
         gameController = controller;
@@ -68,15 +68,15 @@ public class UIController : MonoBehaviour
 
     public void UpdateComboTimer(float time, float max) => roundPart.UpdateComboTimer(time, max);
 
-    public void UpdateRoundCounter(int count) => roundPart.UpdateRoundCounter(count);
+    public void UpdateRoundCounter() => roundPart.UpdateRoundCounter(PlayerParams.Instance.roundMoneyCounter);
 
     #endregion
 
     #region Menu Part
 
-    public void UpdateTotalMoney(int count)
+    public void UpdateTotalMoney()
     {
-        gameMenuPart.UpdateTotalCounter(count);
+        gameMenuPart.UpdateTotalCounter(PlayerParams.Instance.totalMoneyCounter);
     }
 
     #endregion

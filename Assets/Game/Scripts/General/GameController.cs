@@ -5,109 +5,52 @@ public class GameController : MonoBehaviour
 {
     public static SettingsData settings { get; private set; }
 
-    [Header("General")]
-
-    [SerializeField] SoundController soundController;
     [SerializeField] SettingsData settingsData;
 
-    [Header("Game")]
+    public static GameController Instance;
 
-    [SerializeField] KitchenController kitchenController;
-    [SerializeField] OrderManager orderManager;
-
-    [Header("UI")]
-
-    [SerializeField] UIController uiController;
-
-    [Header("Settings")]
-
-    [SerializeField] KitchenSettings kitchenSettings;
-
-    //private SettingsBase settings;
-
-    private ClickManager clickManager;
     private PlayerParams playerParams;
 
-    private RoundTimer roundTimer;
-    private ComboTimer comboTimer;
+    public static void CreateIfNeeded()
+    {
+        if (Instance != null)
+            return;
 
-    private bool gameIsActive;
+        var prefab = Resources.Load<GameController>("GameControllerPrefab");
+        Instantiate(prefab);
+    }
 
     private void Awake()
     {
-        clickManager = new ClickManager();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        settings = settingsData;
+
         playerParams = new PlayerParams(settingsData.playerStartParams);
 
-        roundTimer = new RoundTimer(60f);
-        comboTimer = new ComboTimer(10f);
-
-        settings = settingsData;// new SettingsBase(settingsData);
+        Debug.Log("GameController = " + Instance.gameObject.name);
     }
 
-    private void Start()
+    #region Player Params 
+
+    public void UpdateTotalMoneyAfterRound()
     {
-        soundController.Init();
-        kitchenController.Init(kitchenSettings);
-        orderManager.Init(kitchenSettings);
-        uiController.Init(this);
-
-        gameIsActive = false;
-
-        EventBus.OnRoundEnded += EndRound;
-
-        EventBus.OnGamePaused += PauseGame;
-        EventBus.OnGameResumed += ResumeGame;
+        playerParams.UpdateTotalMoneyAfterRound();
     }
 
-    private void Update()
-    {
-        if (!gameIsActive)
-            return;
-
-        clickManager.UpdateScript();
-        kitchenController.UpdateScript();
-        orderManager.UpdateScript();
-
-        comboTimer.UpdateScript();
-        roundTimer.UpdateTimer();
-    }
-
-    #region Round
-
-    public void StartRound()
-    {
-        kitchenController.ResetPart();
-        orderManager.ResetPart();
-        SwitchGameActive(true);
-        roundTimer.StartTimer();
-        comboTimer.ResetCombo();
-
-        EventBus.OnRoundStarted?.Invoke();
-    }
-
-    public void EndRound()
-    {
-        playerParams.AddTotalMoney(playerParams.roundMoneyCounter);
-        playerParams.ResetRoundMoney();
-
-        kitchenController.ResetPart();
-        orderManager.ResetPart();
-        SwitchGameActive(false);
-        uiController.EndRound();
-    }
-
-    public void ResetRound()
-    {
-        kitchenController.ResetPart();
-        orderManager.ResetPart();
-        SwitchGameActive(true);
-    }
-
-    public void SwitchGameActive(bool active) => gameIsActive = active;
-
-    private void PauseGame() => SwitchGameActive(false);
-
-    private void ResumeGame() => SwitchGameActive(true);
+    public void AddRoundMoney(int amount) => playerParams.AddRoundMoney(amount);
 
     #endregion
 }

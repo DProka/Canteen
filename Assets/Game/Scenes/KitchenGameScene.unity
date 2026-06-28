@@ -1344,7 +1344,7 @@ GameObject:
   - component: {fileID: 397930590}
   - component: {fileID: 397930591}
   m_Layer: 0
-  m_Name: GameController
+  m_Name: CanteenController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1376,11 +1376,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 397930589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e163f2322a456d343bd449428f1e68c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 10c9d0fa2c4f0f34ab31f0500d282212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   soundController: {fileID: 576022885}
-  settingsData: {fileID: 11400000, guid: d42d365f54e116441872c7ef5e396151, type: 2}
   kitchenController: {fileID: 1362574574}
   orderManager: {fileID: 1423411535}
   uiController: {fileID: 1867599169}

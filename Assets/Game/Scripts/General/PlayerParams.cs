@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public class PlayerParams
 {
     public static PlayerParams Instance { get; private set; }
@@ -16,30 +18,13 @@ public class PlayerParams
     public int burnerCount { get; private set; }
     public int rawFoodCount { get; private set; }
 
+    private const string saveKey = "generalSave";
+
     public PlayerParams(PlayerStartParams playerParams)
     {
         Instance = this;
 
-        SetStartParams(playerParams);
-
-        EventBus.OnTotalMoneyChanged += AddTotalMoney;
-        EventBus.OnRoundMoneyChanged += AddRoundMoney;
-    }
-
-    private void SetStartParams(PlayerStartParams playerParams)
-    {
-        totalMoneyCounter = playerParams.totalMoneyCounter;
-        roundMoneyCounter = playerParams.roundMoneyCounter;
-
-        tapeCount = playerParams.tapeCount;
-        breadCount = playerParams.breadCount;
-        sauceCount = playerParams.sauceCount;
-
-        glassCount = playerParams.glassCount;
-        drinkCount = playerParams.drinkCount;
-
-        burnerCount = playerParams.burnerCount;
-        rawFoodCount = playerParams.rawFoodCount;
+        Load(playerParams);
     }
 
     #region StaffParams
@@ -89,28 +74,128 @@ public class PlayerParams
 
     #region Money
 
+    public void UpdateTotalMoneyAfterRound()
+    {
+        totalMoneyCounter += roundMoneyCounter;
+        ResetRoundMoney();
+        Save();
+    }
+
     public void AddTotalMoney(int amount)
     {
         totalMoneyCounter += amount;
-        UIController.Instance.UpdateTotalMoney(totalMoneyCounter);
+        Save();
     }
 
     public void AddRoundMoney(int amount)
     {
         roundMoneyCounter += amount;
-        UIController.Instance.UpdateRoundCounter(roundMoneyCounter);
     }
 
     public void ResetRoundMoney()
     {
         roundMoneyCounter = 0;
-        UIController.Instance.UpdateRoundCounter(roundMoneyCounter);
     }
 
     public void ResetMoney()
     {
         totalMoneyCounter = 0;
         roundMoneyCounter = 0;
+    }
+
+    #endregion
+
+    #region Save Load
+
+    public void ResetSave()
+    {
+        SaveData.GeneralData general = new SaveData.GeneralData();
+
+        totalMoneyCounter = general._totalMoneyCounter;
+        roundMoneyCounter = general._roundMoneyCounter;
+
+        tapeCount = general._tapeCount;
+        breadCount = general._breadCount;
+        sauceCount = general._sauceCount;
+
+        glassCount = general._glassCount;
+        drinkCount = general._drinkCount;
+
+        burnerCount = general._burnerCount;
+        rawFoodCount = general._rawFoodCount;
+
+        Save();
+    }
+
+    public void Save()
+    {
+        SaveManager.Save(saveKey, GetSaveSnapshot());
+    }
+
+    public void Load(PlayerStartParams playerParams)
+    {
+        if (PlayerPrefs.HasKey(saveKey))
+        {
+            var data = SaveManager.Load<SaveData.GeneralData>(saveKey);
+
+            totalMoneyCounter = data._totalMoneyCounter;
+            roundMoneyCounter = data._roundMoneyCounter;
+
+            tapeCount = data._tapeCount;
+            breadCount = data._breadCount;
+            sauceCount = data._sauceCount;
+
+            glassCount = data._glassCount;
+            drinkCount = data._drinkCount;
+
+            burnerCount = data._burnerCount;
+            rawFoodCount = data._rawFoodCount;
+        }
+        else
+        {
+            SetStartParams(playerParams);
+        }
+    }
+
+    private SaveData.GeneralData GetSaveSnapshot()
+    {
+        SaveData.GeneralData data = new SaveData.GeneralData()
+        {
+
+            _totalMoneyCounter = totalMoneyCounter,
+            _roundMoneyCounter = roundMoneyCounter,
+
+            _tapeCount = tapeCount,
+            _breadCount = breadCount,
+            _sauceCount = sauceCount,
+
+            _glassCount = glassCount,
+            _drinkCount = drinkCount,
+
+            _burnerCount = burnerCount,
+            _rawFoodCount = rawFoodCount,
+
+        };
+
+        return data;
+    }
+
+    private void SetStartParams(PlayerStartParams playerParams)
+    {
+        totalMoneyCounter = playerParams.totalMoneyCounter;
+        roundMoneyCounter = playerParams.roundMoneyCounter;
+
+        tapeCount = playerParams.tapeCount;
+        breadCount = playerParams.breadCount;
+        sauceCount = playerParams.sauceCount;
+
+        glassCount = playerParams.glassCount;
+        drinkCount = playerParams.drinkCount;
+
+        burnerCount = playerParams.burnerCount;
+        rawFoodCount = playerParams.rawFoodCount;
+
+        Save();
     }
 
     #endregion
