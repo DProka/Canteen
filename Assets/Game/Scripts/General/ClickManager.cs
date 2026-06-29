@@ -33,17 +33,6 @@ public class ClickManager
             if (hits.Length > 0)
             {
                 RaycastHit2D topHit = hits[0];
-                //int topOrder = int.MinValue;
-
-                //foreach (var hit in hits)
-                //{
-                //    var sr = hit.collider.GetComponent<SpriteRenderer>();
-                //    if (sr != null && sr.sortingOrder > topOrder)
-                //    {
-                //        topOrder = sr.sortingOrder;
-                //        topHit = hit;
-                //    }
-                //}
 
                 if (_lookup.TryGetValue(topHit.collider, out var clickable))
                 {
@@ -56,8 +45,6 @@ public class ClickManager
                     RegisterClickable(collider, iclick);
                     iclick.OnClick();
                 }
-                
-                //topHit.collider.GetComponent<IClickable>()?.OnClick();
             }
         }
     }

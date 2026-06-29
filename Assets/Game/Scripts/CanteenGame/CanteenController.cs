@@ -20,7 +20,7 @@ public class CanteenController : MonoBehaviour
 
     [SerializeField] KitchenSettings kitchenSettings;
 
-    private ClickManager clickManager;
+    //private ClickManager clickManager;
 
     private RoundTimer roundTimer;
     private ComboTimer comboTimer;
@@ -29,9 +29,9 @@ public class CanteenController : MonoBehaviour
 
     private void Awake()
     {
-        GameController.CreateIfNeeded();
+        //GameController.CreateIfNeeded();
 
-        clickManager = new ClickManager();
+        //clickManager = new ClickManager();
 
         roundTimer = new RoundTimer(60f);
         comboTimer = new ComboTimer(10f);
@@ -62,7 +62,7 @@ public class CanteenController : MonoBehaviour
         if (!gameIsActive)
             return;
 
-        clickManager.UpdateScript();
+        //clickManager.UpdateScript();
         kitchenController.UpdateScript();
         orderManager.UpdateScript();
 

@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance;
 
+    private ClickManager clickManager;
     private PlayerParams playerParams;
 
     public static void CreateIfNeeded()
@@ -34,10 +36,16 @@ public class GameController : MonoBehaviour
         Initialize();
     }
 
+    private void Update()
+    {
+        clickManager.UpdateScript();
+    }
+
     private void Initialize()
     {
         settings = settingsData;
 
+        clickManager = new ClickManager();
         playerParams = new PlayerParams(settingsData.playerStartParams);
 
         Debug.Log("GameController = " + Instance.gameObject.name);
@@ -51,6 +59,15 @@ public class GameController : MonoBehaviour
     }
 
     public void AddRoundMoney(int amount) => playerParams.AddRoundMoney(amount);
+
+    #endregion
+
+    #region Scene Management
+
+    public void LoadSceneByIndex(int index)
+    {
+        SceneManager.LoadScene("CanteenScene");
+    }
 
     #endregion
 }

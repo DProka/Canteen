@@ -3,7 +3,14 @@ using System;
 
 public class EventBus
 {
-    #region General Events
+    #region Player Params Events
+
+    public static Action OnTotalMoneyChanged;
+    public static Action<int> OnRoundMoneyChanged;
+
+    #endregion
+
+    #region General Game Events
 
     public static Action OnRoundStarted;
     public static Action OnRoundEnded;
@@ -53,14 +60,9 @@ public class EventBus
 
     #endregion
 
-    #region Player Params Events
+    #region Menu Events
 
-    public static Action<int> OnTotalMoneyChanged;
-    public static Action<int> OnRoundMoneyChanged;
-
-    #endregion
-
-    #region Shop Events
+    public static Action<int> OnMenuButtonClicked;
 
     public static Action<StaffType> OnStaffBuyed;
 
